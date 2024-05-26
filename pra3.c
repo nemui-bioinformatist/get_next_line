@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 22:54:09 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/26 19:29:49 by rnomura          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -26,10 +14,10 @@ typedef struct s_line
 
 typedef struct s_buffinfo
 {
-    char buff[BUFFERSIZE];
+    char buff[BUFFER_SIZE];
     char *buffptr;
     int read_byte;
-} t_buffunfo;
+} t_buffinfo;
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
@@ -52,18 +40,16 @@ void	*ft_memcpy(void *dst, const void *src, size_t n)
 
 char ft_getc(int fd)
 {
-    static char buf[BUFFER_SIZE];
-    static char *pufp;
-    static int n = 0;
+    static t_buffinfo buffinfo;
 
-    if (n == 0)
+    if (buffinfo.read_byte == 0)
     {
-        n = read(fd, buf, sizeof buf);
-        pufp = buf;
+        buffinfo.read_byte = read(fd, buffinfo.buff, sizeof buffinfo.buff);
+        buffinfo.buffptr = buffinfo.buff;
     }
 
-    if (--n >= 0)// n = 1でstop
-        return(*pufp++);
+    if (--buffinfo.read_byte >= 0)// n = 1でstop
+        return(*buffinfo.buffptr++);
     return(EOF);
 }
 
@@ -88,6 +74,7 @@ char *get_next_line(int fd)
 {
     char c;
     t_line line;
+
 
     line.length = 0;
     line.capacity = BUFFER_SIZE;
