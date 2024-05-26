@@ -6,7 +6,7 @@
 /*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 22:54:09 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/26 17:32:17 by rnomura          ###   ########.fr       */
+/*   Updated: 2024/05/26 17:45:07 by rnomura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,25 +131,23 @@ char *get_next_line(int fd)
 // }
 
 
-// int main()//->get_next_line
-// {
-//     int fd = open("./text.txt", O_RDONLY);
-//     if (fd == -1)
-//     {
-//         perror("Error opening file");
-//         return 1;
-//     }
+int main()//->get_next_line
+{
+    int fd = open("./text.txt", O_RDONLY);
+    if (fd == -1)
+    {
+        perror("Error opening file");
+        return 1;
+    }
     char *line;
     while(42)
     {
         line = get_next_line(fd);
         if (!line)
-            return (NULL);
-        printf("%s", line);
+            return (0);
+        printf("%s\n", line);
         free(line);
     }
-//     printf("%s\n", get_next_line(fd));
-
-//     close(fd);
-//     return 0;
-// }
+    close(fd);
+    return 0;
+}
