@@ -6,7 +6,7 @@
 /*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 22:55:14 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/27 21:41:03 by rnomura          ###   ########.fr       */
+/*   Updated: 2024/05/27 22:05:22 by rnomura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <unistd.h>
+
+# define BUFFER_SIZE 42
 
 typedef struct s_line
 {
