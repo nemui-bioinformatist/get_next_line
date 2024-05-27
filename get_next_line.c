@@ -6,7 +6,7 @@
 /*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 22:54:09 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/27 22:03:11 by rnomura          ###   ########.fr       */
+/*   Updated: 2024/05/27 22:18:09 by rnomura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,9 @@ char	*get_next_line(int fd)
 	return (line.string);
 }
 
+
+
+
 // #include <stdio.h>
 
 // int main()//->ft_getc
@@ -127,26 +130,30 @@ char	*get_next_line(int fd)
 // }
 
 // #----------------------------main.c-----------------------------#
+// __attribute__((destructor))
+// static void destructor() {
+//     system("leaks -q a.out");
+// }
 
-int main()//->get_next_line
-{
-    int fd = open("./text.txt", O_RDONLY);
-    if (fd == -1)
-    {
-        perror("Error opening file");
-        return (1);
-    }
-    char *line;
-    while(42)
-    {
-        line = get_next_line(fd);
-        if (!line)
-            return (0);
-        printf("%s\n", line);
-        free(line);
-    }
-    close(fd);
-    return (0);
-}
+// int main()//->get_next_line
+// {
+//     int fd = open("./text.txt", O_RDONLY);
+//     if (fd == -1)
+//     {
+//         perror("Error opening file");
+//         return (1);
+//     }
+//     char *line;
+//     while(42)
+//     {
+//         line = get_next_line(fd);
+//         if (!line)
+//             return (0);
+//         printf("%s\n", line);
+//         free(line);
+//     }
+//     close(fd);
+//     return (0);
+// }
 
 // #-----------------------------------------------------------------#
