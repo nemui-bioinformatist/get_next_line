@@ -6,7 +6,7 @@
 /*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 22:54:09 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/29 00:04:14 by rnomura          ###   ########.fr       */
+/*   Updated: 2024/05/29 00:17:56 by rnomura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	ft_getc(int fd)
 	return (EOF);
 }
 
-void	ft_putc(t_line *line, char c)
+int	ft_putc(t_line *line, char c)
 {
 	char	*new_string;
 
@@ -60,16 +60,13 @@ void	ft_putc(t_line *line, char c)
 		line->capacity = (line->length + 1) * 2;
 		new_string = (char *)malloc(sizeof(char) * line->capacity);
 		if (!new_string)
-		{
-			free(line->string);
-			line->string = NULL;
-			return ;
-		}
+			return (0);
 		ft_memcpy(new_string, line->string, line->length);
 		free(line->string);
 		line->string = new_string;
 	}
 	line->string[line->length++] = c;
+	return (1);
 }
 
 char	*get_next_line(int fd)
@@ -86,24 +83,16 @@ char	*get_next_line(int fd)
 	{
 		c = ft_getc(fd);
 		if (c == -2)
-		{
-			free(line.string);
-			return (NULL);
-		}
+			return (free(line.string), NULL);
 		if (c == EOF)
 			break ;
-		ft_putc(&line, c);
-		if (!line.string)
-			return (NULL);
+		if (ft_putc(&line, c) == 0)
+			return (free(line.string), NULL);
 		if (c == '\n')
 			break ;
 	}
-	if (line.length > 0)
-	{
-		ft_putc(&line, '\0');
-		if (!line.string)
-			return (NULL);
-	}
+	if (line.length > 0 && ft_putc(&line, '\0') == 0)
+		return (free(line.string), NULL);
 	return (line.string);
 }
 

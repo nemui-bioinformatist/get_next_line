@@ -6,7 +6,7 @@
 /*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 22:55:14 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/29 00:00:02 by rnomura          ###   ########.fr       */
+/*   Updated: 2024/05/29 00:08:02 by rnomura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_buffinfo
 
 void		*ft_memcpy(void *dst, const void *src, size_t n);
 char		ft_getc(int fd);
-void		ft_putc(t_line *line, char c);
+int			ft_putc(t_line *line, char c);
 char		*get_next_line(int fd);
 
 #endif // GET_NEXT_LINE_H
