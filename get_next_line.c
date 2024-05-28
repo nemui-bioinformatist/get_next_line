@@ -6,7 +6,7 @@
 /*   By: rnomura <rnomura@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/22 22:54:09 by rnomura           #+#    #+#             */
-/*   Updated: 2024/05/27 22:18:09 by rnomura          ###   ########.fr       */
+/*   Updated: 2024/05/29 00:04:14 by rnomura          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	*ft_memcpy(void *dst, const void *src, size_t n)
 {
-	char		*memo_dst;
-	const char	*memo_src;
-	size_t		i;
+	unsigned char		*memo_dst;
+	const unsigned char	*memo_src;
+	size_t				i;
 
-	memo_dst = (char *)dst;
-	memo_src = (const char *)src;
+	memo_dst = (unsigned char *)dst;
+	memo_src = (const unsigned char *)src;
 	if (dst == src)
 		return (dst);
 	i = 0;
@@ -37,13 +37,17 @@ char	ft_getc(int fd)
 
 	if (buffinfo.read_byte == 0)
 	{
-		buffinfo.read_byte = read(fd, buffinfo.buff, sizeof buffinfo.buff);
-        if (buffinfo.read_byte <= 0)
-            return (EOF);
+		buffinfo.read_byte = read(fd, buffinfo.buff, BUFFER_SIZE);
+		if (buffinfo.read_byte < 0)
+		{
+			buffinfo.read_byte = 0;
+			return (-2);
+		}
 		buffinfo.buffptr = buffinfo.buff;
 	}
 	if (--buffinfo.read_byte >= 0)
 		return (*buffinfo.buffptr++);
+	buffinfo.read_byte = 0;
 	return (EOF);
 }
 
@@ -51,16 +55,16 @@ void	ft_putc(t_line *line, char c)
 {
 	char	*new_string;
 
-	if (line->length + 1 > line->capacity)
+	if (line->length + 1 >= line->capacity)
 	{
 		line->capacity = (line->length + 1) * 2;
 		new_string = (char *)malloc(sizeof(char) * line->capacity);
 		if (!new_string)
-        {
-            free(line->string);
-            line->string = NULL;
-            return;
-        }
+		{
+			free(line->string);
+			line->string = NULL;
+			return ;
+		}
 		ft_memcpy(new_string, line->string, line->length);
 		free(line->string);
 		line->string = new_string;
@@ -73,31 +77,35 @@ char	*get_next_line(int fd)
 	char	c;
 	t_line	line;
 
-	line.length = 0;
-	line.capacity = BUFFER_SIZE;
-	line.string = (char *)malloc(BUFFER_SIZE * sizeof(char) * line.capacity);
-	if (!line.string)
+	if (fd < 0)
 		return (NULL);
+	line.length = 0;
+	line.capacity = 0;
+	line.string = NULL;
 	while (1)
 	{
 		c = ft_getc(fd);
-		if (c == EOF || c == '\n')
+		if (c == -2)
+		{
+			free(line.string);
+			return (NULL);
+		}
+		if (c == EOF)
 			break ;
 		ft_putc(&line, c);
-        if (line.string == NULL)
-            return(NULL);
+		if (!line.string)
+			return (NULL);
+		if (c == '\n')
+			break ;
 	}
-	if (line.length == 0 && c == EOF)
-    {
-        free(line.string);
-        return(NULL);
-    }
-	line.string[line.length] = '\0';
+	if (line.length > 0)
+	{
+		ft_putc(&line, '\0');
+		if (!line.string)
+			return (NULL);
+	}
 	return (line.string);
 }
-
-
-
 
 // #include <stdio.h>
 
